@@ -4,26 +4,28 @@
     box-sizing:border-box;
 }
 
-html,
-body{
+html{
     width:100%;
+    min-height:100%;
     overflow-x:hidden;
     overflow-y:auto;
     -webkit-overflow-scrolling:touch;
-    touch-action:pan-y;
 }
 
 body{
 
     font-family:Arial, sans-serif;
 
+    width:100%;
+
     min-height:100vh;
 
-    display:flex;
+    overflow-x:hidden;
+    overflow-y:auto;
 
-    justify-content:center;
+    -webkit-overflow-scrolling:touch;
 
-    align-items:flex-start;
+    touch-action:pan-y;
 
     background:
     radial-gradient(circle at top left,
@@ -48,7 +50,7 @@ body::after{
 
     content:"";
 
-    position:absolute;
+    position:fixed;
 
     width:320px;
 
@@ -59,6 +61,8 @@ body::after{
     filter:blur(100px);
 
     z-index:-1;
+
+    pointer-events:none;
 }
 
 body::before{
@@ -85,11 +89,7 @@ body::after{
 
     max-width:520px;
 
-    overflow:visible;
-
-    margin-top:25px;
-
-    margin-bottom:100px;
+    margin:25px auto 140px auto;
 
     background:rgba(255,255,255,0.08);
 
@@ -97,7 +97,7 @@ body::after{
 
     backdrop-filter:blur(20px);
 
-    padding:22px 22px 120px 22px;
+    padding:22px;
 
     border-radius:28px;
 
@@ -105,6 +105,8 @@ body::after{
     0 10px 40px rgba(0,0,0,0.35);
 
     position:relative;
+
+    overflow:visible;
 }
 
 .top-glow{
@@ -124,6 +126,8 @@ body::after{
     right:-80px;
 
     opacity:0.35;
+
+    pointer-events:none;
 }
 
 h1{
@@ -286,8 +290,6 @@ input:focus{
     flex-direction:column;
 
     gap:14px;
-
-    overflow:visible;
 }
 
 .result-header{
@@ -421,12 +423,12 @@ input:focus{
 
     body{
         padding:14px;
-        padding-bottom:120px;
     }
 
     .container{
-        padding:20px 20px 120px 20px;
+        padding:20px;
         border-radius:24px;
+        margin-bottom:160px;
     }
 
     h1{
