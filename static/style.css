@@ -16,6 +16,9 @@ body{
 
     min-height:100dvh;
 
+    overflow-y:auto;
+    overflow-x:hidden;
+
     display:flex;
 
     justify-content:center;
@@ -38,6 +41,8 @@ body{
     padding:14px;
 
     position:relative;
+
+    -webkit-overflow-scrolling:touch;
 }
 
 body::before,
@@ -79,6 +84,8 @@ body::after{
 .container{
 
     width:min(100%,520px);
+
+    max-width:100%;
 
     overflow:hidden;
 
