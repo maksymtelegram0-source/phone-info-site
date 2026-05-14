@@ -46,6 +46,22 @@
 
     <div class="loader" id="loader"></div>
 
+    <div class="history-box">
+
+        <div class="history-top">
+
+            <span>Recent Searches</span>
+
+            <button id="clearHistory">
+                Clear
+            </button>
+
+        </div>
+
+        <div id="historyList"></div>
+
+    </div>
+
     {% if result %}
 
     <div class="result slide-up">
@@ -161,6 +177,8 @@ form.addEventListener("submit", function(event){
 
     button.disabled = true;
 
+    saveHistory(value);
+
 });
 
 pasteBtn.addEventListener("click", async () => {
@@ -170,6 +188,10 @@ pasteBtn.addEventListener("click", async () => {
         const text = await navigator.clipboard.readText();
 
         input.value = text;
+
+        if(navigator.vibrate){
+            navigator.vibrate(40);
+        }
 
     } catch {
 
@@ -191,6 +213,10 @@ if(copyBtn){
 
         copyBtn.innerText = "Copied";
 
+        if(navigator.vibrate){
+            navigator.vibrate(50);
+        }
+
         setTimeout(() => {
 
             copyBtn.innerText = "Copy";
@@ -200,6 +226,68 @@ if(copyBtn){
     });
 
 }
+
+function saveHistory(number){
+
+    let history = JSON.parse(
+        localStorage.getItem("phoneHistory")
+    ) || [];
+
+    history = history.filter(item => item !== number);
+
+    history.unshift(number);
+
+    history = history.slice(0, 8);
+
+    localStorage.setItem(
+        "phoneHistory",
+        JSON.stringify(history)
+    );
+
+}
+
+function renderHistory(){
+
+    const historyList =
+    document.getElementById("historyList");
+
+    let history = JSON.parse(
+        localStorage.getItem("phoneHistory")
+    ) || [];
+
+    historyList.innerHTML = "";
+
+    history.forEach(number => {
+
+        const item = document.createElement("button");
+
+        item.className = "history-item";
+
+        item.innerText = number;
+
+        item.onclick = () => {
+
+            input.value = number;
+
+        };
+
+        historyList.appendChild(item);
+
+    });
+
+}
+
+document
+.getElementById("clearHistory")
+.addEventListener("click", () => {
+
+    localStorage.removeItem("phoneHistory");
+
+    renderHistory();
+
+});
+
+renderHistory();
 
 </script>
 
