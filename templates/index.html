@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,32 +10,37 @@
 
 <body>
 
-<div class="container">
+<div class="container fade-in">
 
-    <div class="logo">
-        📱 Phone Intelligence
-    </div>
+    <div class="top-glow"></div>
 
-    <div class="subtitle">
+    <h1>📱 Phone Intelligence</h1>
+
+    <p class="subtitle">
         Search public phone information instantly
-    </div>
+    </p>
 
-    <form method="POST">
+    <form method="POST" id="searchForm">
 
-        <div class="search-box">
+        <div class="input-wrapper">
 
             <input
                 type="text"
-                name="phone"
+                name="number"
+                id="phoneInput"
                 placeholder="+79991234567"
                 required
             >
 
-            <button type="submit">
-                Search
+            <button type="button" id="pasteBtn">
+                Paste
             </button>
 
         </div>
+
+        <button type="submit" id="searchBtn">
+            Search
+        </button>
 
     </form>
 
@@ -43,80 +48,86 @@
 
     {% if result %}
 
-    <div class="result">
+    <div class="result slide-up">
 
-        <div class="result-top">
+        {% if result.error %}
 
-            <h2>Result</h2>
-
-            <button class="copy-btn" onclick="copyResult()">
-                Copy
-            </button>
-
-        </div>
-
-        <div class="result-grid">
-
-            <div class="result-card">
-                <div class="label">
-                    📞 Number
-                </div>
-
-                <div class="value">
-                    {{ result.number }}
-                </div>
+            <div class="error">
+                {{ result.error }}
             </div>
 
-            <div class="result-card">
-                <div class="label">
-                    🌍 Country
-                </div>
+        {% else %}
 
-                <div class="value">
+            <div class="result-header">
+
+                <h2>Result</h2>
+
+                <button class="copy-btn" id="copyBtn">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="info-card">
+
+                <span>📞 Number</span>
+
+                <p>
+                    {{ result.international_format }}
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <span>🌍 Country</span>
+
+                <p>
+
+                    {% if result.country_code == 'RU' %}🇷🇺{% endif %}
+                    {% if result.country_code == 'US' %}🇺🇸{% endif %}
+                    {% if result.country_code == 'UA' %}🇺🇦{% endif %}
+                    {% if result.country_code == 'GB' %}🇬🇧{% endif %}
+                    {% if result.country_code == 'DE' %}🇩🇪{% endif %}
+
                     {{ result.country_name }}
-                </div>
+
+                </p>
+
             </div>
 
-            <div class="result-card">
-                <div class="label">
-                    📍 Region
-                </div>
+            <div class="info-card">
 
-                <div class="value">
+                <span>📍 Region</span>
+
+                <p>
                     {{ result.location }}
-                </div>
+                </p>
+
             </div>
 
-            <div class="result-card">
-                <div class="label">
-                    📡 Carrier
-                </div>
+            <div class="info-card">
 
-                <div class="value">
+                <span>📡 Carrier</span>
+
+                <p>
                     {{ result.carrier }}
-                </div>
+                </p>
+
             </div>
 
-            <div class="result-card">
-                <div class="label">
-                    ☎️ Type
-                </div>
+            <div class="info-card">
 
-                <div class="value">
+                <span>☎️ Type</span>
+
+                <p>
                     {{ result.line_type }}
-                </div>
+                </p>
+
             </div>
 
-        </div>
+        {% endif %}
 
-    </div>
-
-    {% endif %}
-
-    {% if error %}
-
-    <div class="error">
-        {{ error }}
     </div>
 
     {% endif %}
@@ -125,24 +136,68 @@
 
 <script>
 
-const form = document.querySelector("form");
+const form = document.getElementById("searchForm");
 const loader = document.getElementById("loader");
+const button = document.getElementById("searchBtn");
+const input = document.getElementById("phoneInput");
+const pasteBtn = document.getElementById("pasteBtn");
 
-form.addEventListener("submit", () => {
+form.addEventListener("submit", function(event){
+
+    const value = input.value.trim();
+
+    if(value.length < 8){
+
+        alert("Введите корректный номер");
+
+        event.preventDefault();
+
+        return;
+    }
+
     loader.style.display = "block";
+
+    button.innerText = "Searching...";
+
+    button.disabled = true;
+
 });
 
-function copyResult(){
+pasteBtn.addEventListener("click", async () => {
 
-    const text = `
-Number: {{ result.number if result else '' }}
-Country: {{ result.country_name if result else '' }}
-Region: {{ result.location if result else '' }}
-Carrier: {{ result.carrier if result else '' }}
-Type: {{ result.line_type if result else '' }}
-    `;
+    try {
 
-    navigator.clipboard.writeText(text);
+        const text = await navigator.clipboard.readText();
+
+        input.value = text;
+
+    } catch {
+
+        alert("Clipboard unavailable");
+
+    }
+
+});
+
+const copyBtn = document.getElementById("copyBtn");
+
+if(copyBtn){
+
+    copyBtn.addEventListener("click", async () => {
+
+        const resultText = document.querySelector(".result").innerText;
+
+        await navigator.clipboard.writeText(resultText);
+
+        copyBtn.innerText = "Copied";
+
+        setTimeout(() => {
+
+            copyBtn.innerText = "Copy";
+
+        }, 2000);
+
+    });
 
 }
 
