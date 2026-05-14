@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Phone Intelligence</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Phone Intelligence</h1>
+
+    <p class="subtitle">
+        Search public phone number information instantly
+    </p>
+
+    <form method="POST" id="searchForm">
+
+        <input
+            type="text"
+            name="number"
+            id="phoneInput"
+            placeholder="+79991234567"
+            required
+        >
+
+        <button type="submit" id="searchBtn">
+            Search
+        </button>
+
+    </form>
+
+    <div class="loader" id="loader"></div>
+
+    {% if result %}
+
+        <div class="result">
+
+            {% if result.error %}
+
+                <div class="error">
+                    {{ result.error }}
+                </div>
+
+            {% else %}
+
+                <h2>Result</h2>
+
+                <p>
+                    <strong>Number:</strong>
+                    {{ result.international_format }}
+                </p>
+
+                <p>
+                    <strong>Country:</strong>
+                    {{ result.country_name }}
+                </p>
+
+                <p>
+                    <strong>Region:</strong>
+                    {{ result.location }}
+                </p>
+
+                <p>
+                    <strong>Carrier:</strong>
+                    {{ result.carrier }}
+                </p>
+
+                <p>
+                    <strong>Type:</strong>
+                    {{ result.line_type }}
+                </p>
+
+                <p>
+                    <strong>Country Code:</strong>
+                    +{{ result.country_code }}
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+<script>
+
+const form = document.getElementById("searchForm");
+
+const loader = document.getElementById("loader");
+
+const button = document.getElementById("searchBtn");
+
+const input = document.getElementById("phoneInput");
+
+form.addEventListener("submit", function(event){
+
+    const value = input.value.trim();
+
+    if(value.length < 8){
+
+        alert("Введите корректный номер");
+
+        event.preventDefault();
+
+        return;
+    }
+
+    loader.style.display = "block";
+
+    button.innerText = "Searching...";
+
+});
+
+</script>
+
+</body>
+</html>
