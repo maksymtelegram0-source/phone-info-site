@@ -40,8 +40,6 @@ body{
     position:relative;
 }
 
-/* blur background */
-
 body::before,
 body::after{
 
@@ -78,8 +76,6 @@ body::after{
     right:-120px;
 }
 
-/* container */
-
 .container{
 
     width:min(100%,520px);
@@ -96,17 +92,34 @@ body::after{
 
     backdrop-filter:blur(20px);
 
-    padding:20px;
+    padding:22px;
 
     border-radius:28px;
 
     box-shadow:
     0 10px 40px rgba(0,0,0,0.35);
 
-    animation:fadeIn 0.8s ease;
+    position:relative;
 }
 
-/* title */
+.top-glow{
+
+    position:absolute;
+
+    width:180px;
+
+    height:180px;
+
+    background:#3b82f6;
+
+    filter:blur(90px);
+
+    top:-80px;
+
+    right:-80px;
+
+    opacity:0.35;
+}
 
 h1{
 
@@ -132,8 +145,6 @@ h1{
     line-height:1.5;
 }
 
-/* form */
-
 form{
 
     display:flex;
@@ -143,7 +154,10 @@ form{
     gap:14px;
 }
 
-/* input */
+.input-wrapper{
+
+    position:relative;
+}
 
 input{
 
@@ -151,7 +165,7 @@ input{
 
     height:58px;
 
-    padding:0 18px;
+    padding:0 90px 0 18px;
 
     border:none;
 
@@ -175,11 +189,36 @@ input::placeholder{
 input:focus{
 
     background:rgba(255,255,255,0.12);
+
+    transform:scale(1.01);
 }
 
-/* button */
+#pasteBtn{
 
-button{
+    position:absolute;
+
+    right:8px;
+
+    top:8px;
+
+    width:70px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.1);
+
+    color:white;
+
+    font-size:14px;
+
+    cursor:pointer;
+}
+
+#searchBtn{
 
     width:100%;
 
@@ -197,7 +236,7 @@ button{
 
     color:white;
 
-    font-size:20px;
+    font-size:18px;
 
     font-weight:700;
 
@@ -206,7 +245,7 @@ button{
     transition:0.3s;
 }
 
-button:hover{
+#searchBtn:hover{
 
     transform:translateY(-2px);
 
@@ -214,69 +253,104 @@ button:hover{
     0 10px 25px rgba(59,130,246,0.4);
 }
 
-/* loader */
-
 .loader{
 
     display:none;
 
-    width:40px;
+    width:55px;
 
-    height:40px;
+    height:55px;
 
-    border:4px solid rgba(255,255,255,0.2);
+    border:5px solid rgba(255,255,255,0.15);
 
-    border-top:4px solid white;
+    border-top:5px solid white;
 
     border-radius:50%;
 
     animation:spin 1s linear infinite;
 
-    margin:25px auto;
+    margin:28px auto;
 }
-
-/* result */
 
 .result{
 
     margin-top:24px;
 
-    background:rgba(255,255,255,0.06);
+    display:flex;
 
-    border:1px solid rgba(255,255,255,0.08);
+    flex-direction:column;
 
-    padding:22px;
+    gap:14px;
+}
 
-    border-radius:22px;
+.result-header{
 
-    animation:slideUp 0.5s ease;
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
 }
 
 .result h2{
 
-    margin-bottom:18px;
-
     font-size:24px;
 }
 
-.result p{
+.copy-btn{
 
-    margin:14px 0;
+    border:none;
 
-    color:#e2e8f0;
+    padding:10px 16px;
 
-    font-size:15px;
+    border-radius:12px;
+
+    background:#2563eb;
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.info-card{
+
+    background:rgba(255,255,255,0.06);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    padding:18px;
+
+    border-radius:18px;
+
+    transition:0.3s;
+}
+
+.info-card:hover{
+
+    transform:translateY(-2px);
+
+    background:rgba(255,255,255,0.08);
+}
+
+.info-card span{
+
+    display:block;
+
+    color:#94a3b8;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+}
+
+.info-card p{
+
+    font-size:16px;
 
     line-height:1.5;
 
     word-break:break-word;
 }
-
-.result strong{
-    color:white;
-}
-
-/* error */
 
 .error{
 
@@ -284,14 +358,20 @@ button:hover{
 
     border:1px solid rgba(239,68,68,0.35);
 
-    padding:14px;
+    padding:16px;
 
     border-radius:14px;
 
     color:#fecaca;
 }
 
-/* animations */
+.fade-in{
+    animation:fadeIn 0.8s ease;
+}
+
+.slide-up{
+    animation:slideUp 0.5s ease;
+}
 
 @keyframes fadeIn{
 

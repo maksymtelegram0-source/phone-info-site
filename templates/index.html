@@ -1,39 +1,42 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Phone Intelligence</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
-<div class="container">
+<div class="container fade-in">
 
-    <h1>Phone Intelligence</h1>
+    <div class="top-glow"></div>
+
+    <h1>📱 Phone Intelligence</h1>
 
     <p class="subtitle">
-        Search public phone number information instantly
+        Search public phone information instantly
     </p>
 
     <form method="POST" id="searchForm">
 
-        <input
-            type="text"
-            name="number"
-            id="phoneInput"
-            placeholder="+79991234567"
-            required
-        >
+        <div class="input-wrapper">
+
+            <input
+                type="text"
+                name="number"
+                id="phoneInput"
+                placeholder="+79991234567"
+                required
+            >
+
+            <button type="button" id="pasteBtn">
+                Paste
+            </button>
+
+        </div>
 
         <button type="submit" id="searchBtn">
             Search
@@ -45,51 +48,59 @@
 
     {% if result %}
 
-        <div class="result">
+    <div class="result slide-up">
 
-            {% if result.error %}
+        {% if result.error %}
 
-                <div class="error">
-                    {{ result.error }}
-                </div>
+            <div class="error">
+                {{ result.error }}
+            </div>
 
-            {% else %}
+        {% else %}
 
+            <div class="result-header">
                 <h2>Result</h2>
 
-                <p>
-                    <strong>Number:</strong>
-                    {{ result.international_format }}
-                </p>
+                <button class="copy-btn" id="copyBtn">
+                    Copy
+                </button>
+            </div>
 
+            <div class="info-card">
+                <span>📞 Number</span>
+                <p>{{ result.international_format }}</p>
+            </div>
+
+            <div class="info-card">
+                <span>🌍 Country</span>
                 <p>
-                    <strong>Country:</strong>
+                    {% if result.country_code == 'RU' %}🇷🇺{% endif %}
+                    {% if result.country_code == 'US' %}🇺🇸{% endif %}
+                    {% if result.country_code == 'UA' %}🇺🇦{% endif %}
+                    {% if result.country_code == 'GB' %}🇬🇧{% endif %}
+                    {% if result.country_code == 'DE' %}🇩🇪{% endif %}
                     {{ result.country_name }}
                 </p>
+            </div>
 
-                <p>
-                    <strong>Region:</strong>
-                    {{ result.location }}
-                </p>
+            <div class="info-card">
+                <span>📍 Region</span>
+                <p>{{ result.location }}</p>
+            </div>
 
-                <p>
-                    <strong>Carrier:</strong>
-                    {{ result.carrier }}
-                </p>
+            <div class="info-card">
+                <span>📡 Carrier</span>
+                <p>{{ result.carrier }}</p>
+            </div>
 
-                <p>
-                    <strong>Type:</strong>
-                    {{ result.line_type }}
-                </p>
+            <div class="info-card">
+                <span>☎️ Type</span>
+                <p>{{ result.line_type }}</p>
+            </div>
 
-                <p>
-                    <strong>Country Code:</strong>
-                    +{{ result.country_code }}
-                </p>
+        {% endif %}
 
-            {% endif %}
-
-        </div>
+    </div>
 
     {% endif %}
 
@@ -98,31 +109,61 @@
 <script>
 
 const form = document.getElementById("searchForm");
-
 const loader = document.getElementById("loader");
-
 const button = document.getElementById("searchBtn");
-
 const input = document.getElementById("phoneInput");
+const pasteBtn = document.getElementById("pasteBtn");
 
 form.addEventListener("submit", function(event){
 
     const value = input.value.trim();
 
     if(value.length < 8){
-
         alert("Введите корректный номер");
-
         event.preventDefault();
-
         return;
     }
 
     loader.style.display = "block";
-
     button.innerText = "Searching...";
+    button.disabled = true;
 
 });
+
+pasteBtn.addEventListener("click", async () => {
+
+    try {
+
+        const text = await navigator.clipboard.readText();
+        input.value = text;
+
+    } catch {
+
+        alert("Clipboard unavailable");
+
+    }
+
+});
+
+const copyBtn = document.getElementById("copyBtn");
+
+if(copyBtn){
+
+    copyBtn.addEventListener("click", async () => {
+
+        const resultText = document.querySelector(".result").innerText;
+
+        await navigator.clipboard.writeText(resultText);
+
+        copyBtn.innerText = "Copied";
+
+        setTimeout(() => {
+            copyBtn.innerText = "Copy";
+        }, 2000);
+
+    });
+
+}
 
 </script>
 
