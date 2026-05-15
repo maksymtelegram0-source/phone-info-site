@@ -43,26 +43,6 @@
         >
             👤 Username
         </button>
-         <button
-    class="tab-btn"
-    onclick="switchTab('ip')"
->
-    🌍 IP
-</button>
-
-<button
-    class="tab-btn"
-    onclick="switchTab('domain')"
->
-    🌐 Domain
-</button>
-
-<button
-    class="tab-btn"
-    onclick="switchTab('scanner')"
->
-    ⚡ Scanner
-</button>
 
     </div>
 
@@ -210,7 +190,6 @@
     <div
         id="usernameTab"
         class="tab-content"
-        style="display:none;"
     >
 
         <h1>👤 Username Lookup</h1>
@@ -299,20 +278,19 @@ function showToast(text){
 
 function switchTab(tab){
 
-    const phoneTab =
-    document.getElementById("phoneTab");
+    document
+    .querySelectorAll(".tab-content")
+    .forEach(content => {
 
-    const usernameTab =
-    document.getElementById("usernameTab");
+        content.style.display = "none";
 
-    const buttons =
-    document.querySelectorAll(".tab-btn");
+        content.classList.remove("active");
 
-    phoneTab.style.display = "none";
+    });
 
-    usernameTab.style.display = "none";
-
-    buttons.forEach(btn => {
+    document
+    .querySelectorAll(".tab-btn")
+    .forEach(btn => {
 
         btn.classList.remove("active");
 
@@ -320,21 +298,39 @@ function switchTab(tab){
 
     if(tab === "phone"){
 
+        const phoneTab =
+        document.getElementById("phoneTab");
+
         phoneTab.style.display = "block";
 
-        buttons[0].classList.add("active");
+        phoneTab.classList.add("active");
+
+        document
+        .querySelectorAll(".tab-btn")[0]
+        .classList.add("active");
 
     }
 
     if(tab === "username"){
 
+        const usernameTab =
+        document.getElementById("usernameTab");
+
         usernameTab.style.display = "block";
 
-        buttons[1].classList.add("active");
+        usernameTab.classList.add("active");
+
+        document
+        .querySelectorAll(".tab-btn")[1]
+        .classList.add("active");
 
     }
 
 }
+
+document
+.getElementById("usernameTab")
+.style.display = "none";
 
 form.addEventListener("submit", function(event){
 
@@ -398,6 +394,10 @@ if(copyBtn){
         );
 
         showToast("✅ Copied");
+
+        if(navigator.vibrate){
+            navigator.vibrate(50);
+        }
 
     });
 
