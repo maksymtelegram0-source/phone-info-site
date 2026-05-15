@@ -176,7 +176,38 @@
                     </p>
 
                 </div>
+                
+                <div class="info-card">
 
+    <span>🔗 Quick Actions</span>
+
+    <div class="quick-actions">
+
+        <a
+            href="https://wa.me/{{ result.number }}"
+            target="_blank"
+            class="action-btn"
+        >
+            WhatsApp
+        </a>
+
+        <a
+            href="tel:{{ result.number }}"
+            class="action-btn"
+        >
+            Call
+        </a>
+
+        <a
+            href="tg://resolve?phone={{ result.number }}"
+            class="action-btn"
+        >
+            Telegram
+        </a>
+
+    </div>
+
+</div>
             {% endif %}
 
         </div>
