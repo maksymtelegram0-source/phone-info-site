@@ -46,6 +46,8 @@
 
     </div>
 
+    <!-- PHONE TAB -->
+
     <div
         id="phoneTab"
         class="tab-content active"
@@ -183,9 +185,12 @@
 
     </div>
 
+    <!-- USERNAME TAB -->
+
     <div
         id="usernameTab"
         class="tab-content"
+        style="display:none;"
     >
 
         <h1>👤 Username Lookup</h1>
@@ -204,7 +209,10 @@
 
         </div>
 
-        <button id="usernameBtn">
+        <button
+            id="usernameBtn"
+            class="username-search-btn"
+        >
             Search Username
         </button>
 
@@ -271,17 +279,20 @@ function showToast(text){
 
 function switchTab(tab){
 
-    document
-    .querySelectorAll(".tab-content")
-    .forEach(content => {
+    const phoneTab =
+    document.getElementById("phoneTab");
 
-        content.classList.remove("active");
+    const usernameTab =
+    document.getElementById("usernameTab");
 
-    });
+    const buttons =
+    document.querySelectorAll(".tab-btn");
 
-    document
-    .querySelectorAll(".tab-btn")
-    .forEach(btn => {
+    phoneTab.style.display = "none";
+
+    usernameTab.style.display = "none";
+
+    buttons.forEach(btn => {
 
         btn.classList.remove("active");
 
@@ -289,25 +300,17 @@ function switchTab(tab){
 
     if(tab === "phone"){
 
-        document
-        .getElementById("phoneTab")
-        .classList.add("active");
+        phoneTab.style.display = "block";
 
-        document
-        .querySelectorAll(".tab-btn")[0]
-        .classList.add("active");
+        buttons[0].classList.add("active");
 
     }
 
     if(tab === "username"){
 
-        document
-        .getElementById("usernameTab")
-        .classList.add("active");
+        usernameTab.style.display = "block";
 
-        document
-        .querySelectorAll(".tab-btn")[1]
-        .classList.add("active");
+        buttons[1].classList.add("active");
 
     }
 
@@ -375,10 +378,6 @@ if(copyBtn){
         );
 
         showToast("✅ Copied");
-
-        if(navigator.vibrate){
-            navigator.vibrate(50);
-        }
 
     });
 
@@ -533,4 +532,3 @@ document
 
 </body>
 </html>
-
