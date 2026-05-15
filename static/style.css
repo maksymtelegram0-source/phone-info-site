@@ -136,9 +136,9 @@ body::after{
 
     display:flex;
 
-    gap:10px;
+    gap:14px;
 
-    margin-bottom:24px;
+    margin-bottom:28px;
 
     width:100%;
 }
@@ -147,19 +147,17 @@ body::after{
 
     flex:1;
 
-    min-width:0;
-
-    height:48px;
+    height:58px;
 
     border:none;
 
-    border-radius:14px;
+    border-radius:18px;
 
     background:rgba(255,255,255,0.06);
 
     color:#cbd5e1;
 
-    font-size:15px;
+    font-size:18px;
 
     font-weight:700;
 
@@ -167,9 +165,15 @@ body::after{
 
     transition:0.3s;
 
-    white-space:nowrap;
+    display:flex;
 
-    overflow:hidden;
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding:0 16px;
 }
 
 .tab-btn.active{
@@ -182,6 +186,9 @@ body::after{
     );
 
     color:white;
+
+    box-shadow:
+    0 8px 24px rgba(59,130,246,0.35);
 }
 
 .tab-content{
@@ -253,6 +260,11 @@ input{
     transition:0.3s;
 }
 
+#usernameTab input{
+
+    padding-right:18px;
+}
+
 input::placeholder{
     color:#cbd5e1;
 }
@@ -315,6 +327,14 @@ input:focus{
     cursor:pointer;
 
     transition:0.3s;
+
+    margin-top:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
 }
 
 #searchBtn:hover,
@@ -324,6 +344,15 @@ input:focus{
 
     box-shadow:
     0 10px 25px rgba(59,130,246,0.4);
+}
+
+#usernameTab{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
 }
 
 .loader{
@@ -631,4 +660,3 @@ input:focus{
     }
 
 }
-
