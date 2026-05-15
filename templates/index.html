@@ -1,56 +1,228 @@
+```html
+<!-- templates/index.html -->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Phone Intelligence</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
 </head>
 
 <body>
+
+<div id="toast"></div>
 
 <div class="container fade-in">
 
     <div class="top-glow"></div>
 
-    <h1>📱 Phone Intelligence</h1>
+    <div class="tabs">
 
-    <p class="subtitle">
-        Search public phone information instantly
-    </p>
+        <button
+            class="tab-btn active"
+            onclick="switchTab('phone')"
+        >
+            📱 Phone
+        </button>
 
-    <form method="POST" id="searchForm">
+        <button
+            class="tab-btn"
+            onclick="switchTab('username')"
+        >
+            👤 Username
+        </button>
+
+    </div>
+
+    <div
+        id="phoneTab"
+        class="tab-content active"
+    >
+
+        <h1>📱 Phone Intelligence</h1>
+
+        <p class="subtitle">
+            Search public phone information instantly
+        </p>
+
+        <form method="POST" id="searchForm">
+
+            <div class="input-wrapper">
+
+                <input
+                    type="text"
+                    name="number"
+                    id="phoneInput"
+                    placeholder="+79991234567"
+                    required
+                >
+
+                <button
+                    type="button"
+                    id="pasteBtn"
+                >
+                    Paste
+                </button>
+
+            </div>
+
+            <button
+                type="submit"
+                id="searchBtn"
+            >
+                Search
+            </button>
+
+        </form>
+
+        <div
+            class="loader"
+            id="loader"
+        ></div>
+
+        {% if result %}
+
+        <div class="result slide-up">
+
+            {% if result.error %}
+
+                <div class="error">
+                    {{ result.error }}
+                </div>
+
+            {% else %}
+
+                <div class="result-header">
+
+                    <h2>Result</h2>
+
+                    <button
+                        class="copy-btn"
+                        id="copyBtn"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+                <div class="info-card">
+
+                    <span>📞 Number</span>
+
+                    <p>
+                        {{ result.international_format }}
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <span>🌍 Country</span>
+
+                    <p>
+
+                        {% if result.country_code == 'RU' %}🇷🇺{% endif %}
+                        {% if result.country_code == 'US' %}🇺🇸{% endif %}
+                        {% if result.country_code == 'UA' %}🇺🇦{% endif %}
+                        {% if result.country_code == 'GB' %}🇬🇧{% endif %}
+                        {% if result.country_code == 'DE' %}🇩🇪{% endif %}
+
+                        {{ result.country_name }}
+
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <span>📍 Region</span>
+
+                    <p>
+                        {{ result.location }}
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <span>📡 Carrier</span>
+
+                    <p>
+                        {{ result.carrier }}
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <span>☎️ Type</span>
+
+                    <p>
+                        {{ result.line_type }}
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <div
+        id="usernameTab"
+        class="tab-content"
+    >
+
+        <h1>👤 Username Lookup</h1>
+
+        <p class="subtitle">
+            Find public social profiles instantly
+        </p>
 
         <div class="input-wrapper">
 
             <input
                 type="text"
-                name="number"
-                id="phoneInput"
-                placeholder="+79991234567"
-                required
+                id="usernameInput"
+                placeholder="@username"
             >
-
-            <button type="button" id="pasteBtn">
-                Paste
-            </button>
 
         </div>
 
-        <button type="submit" id="searchBtn">
-            Search
+        <button id="usernameBtn">
+            Search Username
         </button>
 
-    </form>
+        <div
+            id="usernameResults"
+            class="result"
+        ></div>
 
-    <div class="loader" id="loader"></div>
+    </div>
 
     <div class="history-box">
 
         <div class="history-top">
 
-            <span>Recent Searches</span>
+            <span>
+                Recent Searches
+            </span>
 
             <button id="clearHistory">
                 Clear
@@ -62,101 +234,85 @@
 
     </div>
 
-    {% if result %}
-
-    <div class="result slide-up">
-
-        {% if result.error %}
-
-            <div class="error">
-                {{ result.error }}
-            </div>
-
-        {% else %}
-
-            <div class="result-header">
-
-                <h2>Result</h2>
-
-                <button class="copy-btn" id="copyBtn">
-                    Copy
-                </button>
-
-            </div>
-
-            <div class="info-card">
-
-                <span>📞 Number</span>
-
-                <p>
-                    {{ result.international_format }}
-                </p>
-
-            </div>
-
-            <div class="info-card">
-
-                <span>🌍 Country</span>
-
-                <p>
-
-                    {% if result.country_code == 'RU' %}🇷🇺{% endif %}
-                    {% if result.country_code == 'US' %}🇺🇸{% endif %}
-                    {% if result.country_code == 'UA' %}🇺🇦{% endif %}
-                    {% if result.country_code == 'GB' %}🇬🇧{% endif %}
-                    {% if result.country_code == 'DE' %}🇩🇪{% endif %}
-
-                    {{ result.country_name }}
-
-                </p>
-
-            </div>
-
-            <div class="info-card">
-
-                <span>📍 Region</span>
-
-                <p>
-                    {{ result.location }}
-                </p>
-
-            </div>
-
-            <div class="info-card">
-
-                <span>📡 Carrier</span>
-
-                <p>
-                    {{ result.carrier }}
-                </p>
-
-            </div>
-
-            <div class="info-card">
-
-                <span>☎️ Type</span>
-
-                <p>
-                    {{ result.line_type }}
-                </p>
-
-            </div>
-
-        {% endif %}
-
-    </div>
-
-    {% endif %}
-
 </div>
 
 <script>
 
-const form = document.getElementById("searchForm");
-const loader = document.getElementById("loader");
-const button = document.getElementById("searchBtn");
-const input = document.getElementById("phoneInput");
-const pasteBtn = document.getElementById("pasteBtn");
+const form =
+document.getElementById("searchForm");
+
+const loader =
+document.getElementById("loader");
+
+const button =
+document.getElementById("searchBtn");
+
+const input =
+document.getElementById("phoneInput");
+
+const pasteBtn =
+document.getElementById("pasteBtn");
+
+function showToast(text){
+
+    const toast =
+    document.getElementById("toast");
+
+    toast.innerText = text;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 2200);
+
+}
+
+function switchTab(tab){
+
+    document
+    .querySelectorAll(".tab-content")
+    .forEach(content => {
+
+        content.classList.remove("active");
+
+    });
+
+    document
+    .querySelectorAll(".tab-btn")
+    .forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+    if(tab === "phone"){
+
+        document
+        .getElementById("phoneTab")
+        .classList.add("active");
+
+        document
+        .querySelectorAll(".tab-btn")[0]
+        .classList.add("active");
+
+    }
+
+    if(tab === "username"){
+
+        document
+        .getElementById("usernameTab")
+        .classList.add("active");
+
+        document
+        .querySelectorAll(".tab-btn")[1]
+        .classList.add("active");
+
+    }
+
+}
 
 form.addEventListener("submit", function(event){
 
@@ -164,7 +320,7 @@ form.addEventListener("submit", function(event){
 
     if(value.length < 8){
 
-        alert("Введите корректный номер");
+        showToast("❌ Invalid number");
 
         event.preventDefault();
 
@@ -185,9 +341,12 @@ pasteBtn.addEventListener("click", async () => {
 
     try {
 
-        const text = await navigator.clipboard.readText();
+        const text =
+        await navigator.clipboard.readText();
 
         input.value = text;
+
+        showToast("✅ Pasted");
 
         if(navigator.vibrate){
             navigator.vibrate(40);
@@ -195,33 +354,32 @@ pasteBtn.addEventListener("click", async () => {
 
     } catch {
 
-        alert("Clipboard unavailable");
+        showToast("❌ Clipboard unavailable");
 
     }
 
 });
 
-const copyBtn = document.getElementById("copyBtn");
+const copyBtn =
+document.getElementById("copyBtn");
 
 if(copyBtn){
 
     copyBtn.addEventListener("click", async () => {
 
-        const resultText = document.querySelector(".result").innerText;
+        const resultText =
+        document.querySelector(".result")
+        .innerText;
 
-        await navigator.clipboard.writeText(resultText);
+        await navigator.clipboard.writeText(
+            resultText
+        );
 
-        copyBtn.innerText = "Copied";
+        showToast("✅ Copied");
 
         if(navigator.vibrate){
             navigator.vibrate(50);
         }
-
-        setTimeout(() => {
-
-            copyBtn.innerText = "Copy";
-
-        }, 2000);
 
     });
 
@@ -233,7 +391,9 @@ function saveHistory(number){
         localStorage.getItem("phoneHistory")
     ) || [];
 
-    history = history.filter(item => item !== number);
+    history = history.filter(
+        item => item !== number
+    );
 
     history.unshift(number);
 
@@ -259,7 +419,8 @@ function renderHistory(){
 
     history.forEach(number => {
 
-        const item = document.createElement("button");
+        const item =
+        document.createElement("button");
 
         item.className = "history-item";
 
@@ -289,7 +450,93 @@ document
 
 renderHistory();
 
+document
+.getElementById("usernameBtn")
+.addEventListener("click", () => {
+
+    const username =
+    document
+    .getElementById("usernameInput")
+    .value
+    .replace("@","")
+    .trim();
+
+    if(!username){
+
+        showToast("❌ Enter username");
+
+        return;
+    }
+
+    const sites = [
+
+        {
+            name:"Telegram",
+            url:`https://t.me/${username}`
+        },
+
+        {
+            name:"GitHub",
+            url:`https://github.com/${username}`
+        },
+
+        {
+            name:"TikTok",
+            url:`https://tiktok.com/@${username}`
+        },
+
+        {
+            name:"Instagram",
+            url:`https://instagram.com/${username}`
+        },
+
+        {
+            name:"Reddit",
+            url:`https://reddit.com/user/${username}`
+        }
+
+    ];
+
+    let html = "";
+
+    sites.forEach(site => {
+
+        html += `
+
+        <div class="info-card slide-up">
+
+            <span>
+                🔗 ${site.name}
+            </span>
+
+            <p>
+
+                <a
+                    href="${site.url}"
+                    target="_blank"
+                    class="profile-link"
+                >
+                    ${site.url}
+                </a>
+
+            </p>
+
+        </div>
+
+        `;
+
+    });
+
+    document
+    .getElementById("usernameResults")
+    .innerHTML = html;
+
+    showToast("✅ Username checked");
+
+});
+
 </script>
 
 </body>
 </html>
+```

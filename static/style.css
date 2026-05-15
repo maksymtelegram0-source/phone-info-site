@@ -1,3 +1,6 @@
+```css
+/* static/style.css */
+
 *{
     margin:0;
     padding:0;
@@ -36,7 +39,7 @@ body{
     #7c3aed,
     transparent 30%),
 
-    #0f172a;
+    #000000;
 
     color:white;
 
@@ -128,6 +131,62 @@ body::after{
     opacity:0.35;
 
     pointer-events:none;
+}
+
+.tabs{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:24px;
+}
+
+.tab-btn{
+
+    flex:1;
+
+    height:52px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    color:#cbd5e1;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.tab-btn.active{
+
+    background:
+    linear-gradient(
+        135deg,
+        #3b82f6,
+        #7c3aed
+    );
+
+    color:white;
+
+    box-shadow:
+    0 10px 25px rgba(59,130,246,0.35);
+}
+
+.tab-content{
+    display:none;
+}
+
+.tab-content.active{
+    display:block;
 }
 
 h1{
@@ -227,7 +286,8 @@ input:focus{
     cursor:pointer;
 }
 
-#searchBtn{
+#searchBtn,
+#usernameBtn{
 
     width:100%;
 
@@ -254,7 +314,8 @@ input:focus{
     transition:0.3s;
 }
 
-#searchBtn:hover{
+#searchBtn:hover,
+#usernameBtn:hover{
 
     transform:translateY(-2px);
 
@@ -361,6 +422,20 @@ input:focus{
     word-break:break-word;
 }
 
+.profile-link{
+
+    color:#60a5fa;
+
+    text-decoration:none;
+
+    word-break:break-word;
+}
+
+.profile-link:hover{
+
+    text-decoration:underline;
+}
+
 .history-box{
 
     margin-top:24px;
@@ -450,6 +525,43 @@ input:focus{
     color:#fecaca;
 }
 
+#toast{
+
+    position:fixed;
+
+    left:50%;
+    bottom:30px;
+
+    transform:
+    translateX(-50%)
+    translateY(100px);
+
+    padding:14px 24px;
+
+    border-radius:14px;
+
+    background:
+    rgba(15,23,42,0.95);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    z-index:9999;
+
+    opacity:0;
+
+    transition:0.35s;
+}
+
+#toast.show{
+
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    translateY(0);
+}
+
 .fade-in{
     animation:fadeIn 0.8s ease;
 }
@@ -515,4 +627,15 @@ input:focus{
         font-size:13px;
     }
 
+    .tabs{
+
+        flex-direction:column;
+    }
+
+    .tab-btn{
+
+        width:100%;
+    }
+
 }
+```
